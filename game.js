@@ -33,6 +33,7 @@ function checkAnswer(userChosenColour) {
         currentClickingButton = 0;
       }
     } else {
+      startOver();
       playSound("wrong");
       $('body').addClass("game-over");
       setTimeout(function() {
@@ -43,8 +44,12 @@ function checkAnswer(userChosenColour) {
   }
 }
 
-
-
+function startOver(){
+  currentClickingButton = 0;
+  gamePattern = [];
+  gameStarted=false;
+  level = 0;
+}
 
 
 function nextSequence() {
