@@ -6,6 +6,12 @@ var level = 0;
 var gameStarted = false;
 var currentClickingButton = 0;
 
+$(document).on('keypress', function() {
+  if (gameStarted === false) {
+    nextSequence();
+    gameStarted = true;
+  }
+});
 
 $(".btn").click(function() {
   currentButton = this;
@@ -19,26 +25,27 @@ $(".btn").click(function() {
 
 function checkAnswer(userChosenColour) {
   if (gameStarted === true) {
-    userClickedPattern.push(userChosenColour);
+    //userClickedPattern.push(userChosenColour);
     if (userChosenColour == gamePattern[currentClickingButton]) {
       currentClickingButton++;
       if (currentClickingButton === level) {
-        nextSequence();
+        setTimeout(nextSequence,1000);
         currentClickingButton = 0;
       }
     } else {
-      alert("user clicked not right");
+      playSound("wrong");
+      $('body').addClass("game-over");
+      setTimeout(function() {
+        $('body').removeClass("game-over");
+      }, 200);
+      $('h1').text("Game Over, Press Any Key to Restart");
     }
   }
 }
 
 
-$(document).on('keypress', function() {
-  if (gameStarted === false) {
-    nextSequence();
-    gameStarted = true;
-  }
-});
+
+
 
 function nextSequence() {
   level++;
