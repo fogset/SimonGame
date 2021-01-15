@@ -39,7 +39,7 @@ function checkAnswer(userChosenColour) {
       setTimeout(function() {
         $('body').removeClass("game-over");
       }, 200);
-      $('h1').text("Game Over, Press Any Key to Restart");
+      $('h1').text("Game Over, Press Any Keyboard Key to Restart");
     }
   }
 }
@@ -59,7 +59,6 @@ function nextSequence() {
   gamePattern.push(randomChosenColour);
   $('h1').text("Level " + level);
   $("#" + randomChosenColour).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
-
 }
 
 function playSound(name) {
