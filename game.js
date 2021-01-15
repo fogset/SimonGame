@@ -1,25 +1,53 @@
 var gamePattern = [];
-var userClickedPattern  = [];
+var userClickedPattern = [];
 var buttonColours = ["red", "blue", "green", "yellow"];
-var randomChosenColour = buttonColours[nextSequence()];
-gamePattern.push(randomChosenColour);
+var randomChosenColour;
+var level = 0;
+var gameStarted = false;
+var currentClickingButton = 0;
 
 
-$("#" + randomChosenColour).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
-
-$( ".btn" ).click(function() {
+$(".btn").click(function() {
   currentButton = this;
   var userChosenColour = this.id;
-  userClickedPattern.push(userChosenColour);
-  console.log(userClickedPattern);
   playSound(userChosenColour);
   animatePress(currentButton);
+  console.log("gamePattern: " + gamePattern + " ||   userChosenColour: " + userChosenColour);
+  checkAnswer(userChosenColour);
 
 });
 
+function checkAnswer(userChosenColour) {
+  if (gameStarted === true) {
+    userClickedPattern.push(userChosenColour);
+    if (userChosenColour == gamePattern[currentClickingButton]) {
+      currentClickingButton++;
+      if (currentClickingButton === level) {
+        nextSequence();
+        currentClickingButton = 0;
+      }
+    } else {
+      alert("user clicked not right");
+    }
+  }
+}
+
+
+$(document).on('keypress', function() {
+  if (gameStarted === false) {
+    nextSequence();
+    gameStarted = true;
+  }
+});
+
 function nextSequence() {
-  var randomNumber = Math.floor(Math.random() * 3) + 1;
-  return randomNumber;
+  level++;
+  var randomNumber = Math.floor(Math.random() * 4);
+  randomChosenColour = buttonColours[randomNumber];
+  gamePattern.push(randomChosenColour);
+  $('h1').text("Level " + level);
+  $("#" + randomChosenColour).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
+
 }
 
 function playSound(name) {
@@ -27,9 +55,9 @@ function playSound(name) {
   currentPlayingSound.play();
 }
 
-function animatePress(currentButton){
+function animatePress(currentButton) {
   $(currentButton).addClass("pressed");
-  setTimeout(function(){
-            $(currentButton).removeClass("pressed");
-    }, 200);
+  setTimeout(function() {
+    $(currentButton).removeClass("pressed");
+  }, 200);
 }
